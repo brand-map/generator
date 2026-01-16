@@ -206,10 +206,6 @@ The generator maintains a context object with the following structure:
 {
   templates: Record<string, TemplateData>; // Loaded templates
   data: unknown; // Your data (object or array)
-  rendered: Array<{
-    // Rendered files
-    path: string;
-    content: string;
-  }>;
+  rendered: Array<{ path: string; content: string }>; // Rendered files
 }
 ```
