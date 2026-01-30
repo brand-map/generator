@@ -7,7 +7,13 @@ export type TemplateData = {
   content: string;
 };
 
-export async function loadTemplates(teamplatesPath: string): Promise<(ctx: Record<string, any>) => { templates: Record<string, TemplateData> }> {
+export async function loadTemplates(
+  teamplatesPath: string,
+  config?: {
+    filters?: (template: any) => boolean;
+    // | ((template: any) => boolean)[]
+  },
+): Promise<(ctx: Record<string, any>) => { templates: Record<string, TemplateData> }> {
   if (!teamplatesPath || typeof teamplatesPath !== "string") {
     throw new Error(`Invalid templates path provided. Try string`);
   }
@@ -16,8 +22,14 @@ export async function loadTemplates(teamplatesPath: string): Promise<(ctx: Recor
 
   const resolvedPath = resolve(teamplatesPath);
 
+  const filters = config?.filters;
+
   for await (const templatePath of walkDir(resolvedPath)) {
     if (path.basename(templatePath).startsWith("_")) {
+      continue;
+    }
+
+    if (filters && !filters(teamplatesPath)) {
       continue;
     }
 
