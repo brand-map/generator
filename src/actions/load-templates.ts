@@ -29,7 +29,7 @@ export async function loadTemplates(
       continue;
     }
 
-    if (filters && !filters(teamplatesPath)) {
+    if (filters && !filters(templatePath)) {
       continue;
     }
 
